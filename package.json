@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc -b",
-    "bench:gen": "tsx scripts/gen-benchmark.ts"
+    "bench:gen": "tsx scripts/gen-benchmark.ts",
+    "eval": "python3 eval/run_eval.py --cases eval/cases.jsonl"
   },
   "dependencies": {
     "react": "^19.3.1",

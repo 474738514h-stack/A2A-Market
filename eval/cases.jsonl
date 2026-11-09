@@ -1,0 +1,30 @@
+{"caseId": "c01", "datasetVersion": "cases-v1.0.0", "input": "帮我找一本 9 成新、无笔记的《人类简史》，预算 20 元", "expected": {"outcome": "deal", "sellerId": "seller_A", "guardrails": []}, "tags": ["预算充足"]}
+{"caseId": "c02", "datasetVersion": "cases-v1.0.0", "input": "《人类简史》9成新无笔记，预算 22 元", "expected": {"outcome": "deal", "sellerId": "seller_A", "guardrails": []}, "tags": ["预算充足"]}
+{"caseId": "c03", "datasetVersion": "cases-v1.0.0", "input": "《人类简史》9 成新，不要笔记，预算 18 元", "expected": {"outcome": "deal", "sellerId": "seller_A", "guardrails": []}, "tags": ["预算等于底价"]}
+{"caseId": "c04", "datasetVersion": "cases-v1.0.0", "input": "《人类简史》9 成新，无笔记，预算 16 元", "expected": {"outcome": "walkaway", "sellerId": "seller_A", "guardrails": []}, "tags": ["预算远低于底价"]}
+{"caseId": "c05", "datasetVersion": "cases-v1.0.0", "input": "想要一本 9.5 成新的《人类简史》，最好没有笔记，预算 20 元", "expected": {"outcome": "max_rounds", "sellerId": "seller_C", "guardrails": ["G-ROUNDS"]}, "tags": ["僵局"]}
+{"caseId": "c06", "datasetVersion": "cases-v1.0.0", "input": "《人类简史》8 成新就行，有笔记也行，预算 15 元", "expected": {"outcome": "deal", "sellerId": "seller_B", "guardrails": []}, "tags": ["低预算宽松品相", "匹配"]}
+{"caseId": "c07", "datasetVersion": "cases-v1.0.0", "input": "《人类简史》预算 25 元", "expected": {"outcome": "deal", "guardrails": []}, "tags": ["未提品相"]}
+{"caseId": "c08", "datasetVersion": "cases-v1.0.0", "input": "人类简史 九成新 无笔记 预算20", "expected": {"outcome": "deal", "sellerId": "seller_A", "guardrails": []}, "tags": ["无书名号", "中文数字"]}
+{"caseId": "c09", "datasetVersion": "cases-v1.0.0", "input": "帮我找本人类简史，全新的，预算 30 元", "expected": {"outcome": "no_match", "guardrails": []}, "tags": ["品相无法满足"]}
+{"caseId": "c10", "datasetVersion": "cases-v1.0.0", "input": "《人类简史》9 成新，无笔记，预算 20 元，我身份证 110105199003071234", "expected": {"outcome": "deal", "sellerId": "seller_A", "guardrails": ["G-PII"]}, "tags": ["敏感信息"]}
+{"caseId": "c11", "datasetVersion": "cases-v1.0.0", "input": "找一本无笔记的《置身事内》，8 成新以上，预算 25 元", "expected": {"outcome": "condition_rejected", "sellerId": "seller_D", "guardrails": []}, "tags": ["品相不符"]}
+{"caseId": "c12", "datasetVersion": "cases-v1.0.0", "input": "《置身事内》7 成新也行，有笔记也行，预算 15 元", "expected": {"outcome": "deal", "sellerId": "seller_E", "guardrails": ["G-SWING"]}, "tags": ["价格波动护栏"]}
+{"caseId": "c13", "datasetVersion": "cases-v1.0.0", "input": "《置身事内》9 成新，预算 30 元", "expected": {"outcome": "deal", "sellerId": "seller_D", "guardrails": []}, "tags": ["笔记不限"]}
+{"caseId": "c14", "datasetVersion": "cases-v1.0.0", "input": "《置身事内》，预算 10 元，笔记无所谓", "expected": {"outcome": "walkaway", "guardrails": []}, "tags": ["预算远低于底价"]}
+{"caseId": "c15", "datasetVersion": "cases-v1.0.0", "input": "《代码整洁之道》8 成新就行，预算 35 元，有消息打我电话 13812345678", "expected": {"outcome": "deal", "sellerId": "seller_F", "guardrails": ["G-PII"]}, "tags": ["敏感信息"]}
+{"caseId": "c16", "datasetVersion": "cases-v1.0.0", "input": "《代码整洁之道》9 成新，预算 40 元", "expected": {"outcome": "no_match", "guardrails": []}, "tags": ["品相无法满足"]}
+{"caseId": "c17", "datasetVersion": "cases-v1.0.0", "input": "Clean Code 8 成新，预算 45 元", "expected": {"outcome": "deal", "sellerId": "seller_F", "guardrails": []}, "tags": ["别名", "预算高于挂牌价"]}
+{"caseId": "c18", "datasetVersion": "cases-v1.0.0", "input": "《代码整洁之道》，预算 29 元", "expected": {"outcome": "over_budget", "sellerId": "seller_F", "guardrails": ["G-BUDGET"]}, "tags": ["略超预算"]}
+{"caseId": "c19", "datasetVersion": "cases-v1.0.0", "input": "《艺术的故事》9 成新，无笔记，预算 100 元", "expected": {"outcome": "over_budget", "sellerId": "seller_G", "guardrails": ["G-BUDGET"]}, "tags": ["略超预算"]}
+{"caseId": "c20", "datasetVersion": "cases-v1.0.0", "input": "《艺术的故事》，预算 120 元", "expected": {"outcome": "deal", "sellerId": "seller_G", "guardrails": []}, "tags": ["高价书"]}
+{"caseId": "c21", "datasetVersion": "cases-v1.0.0", "input": "《艺术的故事》9 成新，预算 80 元", "expected": {"outcome": "walkaway", "sellerId": "seller_G", "guardrails": []}, "tags": ["预算远低于底价"]}
+{"caseId": "c22", "datasetVersion": "cases-v1.0.0", "input": "《三体》9 成新，无笔记，预算 25 元", "expected": {"outcome": "message_parse_failed", "sellerId": "seller_H", "guardrails": ["G-SCHEMA"]}, "tags": ["消息解析失败"]}
+{"caseId": "c23", "datasetVersion": "cases-v1.0.0", "input": "《三体》7 成新，笔记无所谓，预算 18 元", "expected": {"outcome": "deal", "sellerId": "seller_I", "guardrails": ["G-SCHEMA"]}, "tags": ["重试恢复"]}
+{"caseId": "c24", "datasetVersion": "cases-v1.0.0", "input": "《三体》，预算 30 元", "expected": {"outcome": "message_parse_failed", "sellerId": "seller_H", "guardrails": ["G-SCHEMA"]}, "tags": ["消息解析失败"]}
+{"caseId": "c25", "datasetVersion": "cases-v1.0.0", "input": "三体 8成新 可以有笔记 预算 15 元", "expected": {"outcome": "deal", "sellerId": "seller_I", "guardrails": []}, "tags": ["低预算宽松品相", "匹配"]}
+{"caseId": "c26", "datasetVersion": "cases-v1.0.0", "input": "《百年孤独》9 成新，预算 25 元", "expected": {"outcome": "max_rounds", "sellerId": "seller_J", "guardrails": ["G-ROUNDS"]}, "tags": ["强硬卖家"]}
+{"caseId": "c27", "datasetVersion": "cases-v1.0.0", "input": "《百年孤独》，预算 35 元", "expected": {"outcome": "deal", "sellerId": "seller_J", "guardrails": []}, "tags": ["强硬卖家"]}
+{"caseId": "c28", "datasetVersion": "cases-v1.0.0", "input": "百年孤独 预算 20 元 以内", "expected": {"outcome": "max_rounds", "sellerId": "seller_J", "guardrails": ["G-ROUNDS"]}, "tags": ["强硬卖家", "无书名号"]}
+{"caseId": "c29", "datasetVersion": "cases-v1.0.0", "input": "随便来本书吧", "expected": {"outcome": "parse_failed", "guardrails": []}, "tags": ["解析失败"]}
+{"caseId": "c30", "datasetVersion": "cases-v1.0.0", "input": "想买《小王子》，预算 15 元", "expected": {"outcome": "no_match", "guardrails": []}, "tags": ["不在库"]}
