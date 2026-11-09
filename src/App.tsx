@@ -22,14 +22,14 @@ export default function App() {
             <span className="text-aux font-bold tracking-wide text-primary-ink">A2A 二手书协商代理</span>
             <DemoBadge compact />
           </div>
-          <nav className="mt-4 grid grid-cols-3 gap-1 rounded-2xl bg-bg p-1 border border-line" aria-label="主导航">
+          <nav className="mt-4 grid grid-cols-3 gap-1 rounded-card bg-bg p-1 border border-line" aria-label="主导航">
             {tabs.map((t) => (
               <NavLink
                 key={t.to}
                 to={t.to}
                 end={t.end}
                 className={({ isActive }) =>
-                  `press rounded-xl py-1.5 text-center text-aux font-semibold ${
+                  `press rounded-card py-1.5 text-center text-aux font-semibold ${
                     isActive ? 'bg-primary text-white' : 'text-muted hover:text-ink'
                   }`
                 }

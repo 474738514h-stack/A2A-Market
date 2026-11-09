@@ -10,7 +10,7 @@ export function SuccessCheck() {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeDasharray="48"
-        style={{ animation: 'check-draw 360ms var(--ease) 120ms both' }}
+        style={{ animation: 'check-draw 280ms var(--ease) 100ms both' }}
       />
     </svg>
   )

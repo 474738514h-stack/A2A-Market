@@ -70,7 +70,7 @@ export function ParsedRequirementCard({ session, parseEvents }: { session: Sessi
           </>
         }
       />
-      <p className="rounded-2xl bg-bg px-4 py-3 text-body leading-[1.75] break-words border border-line">
+      <p className="rounded-card bg-bg px-4 py-3 text-body leading-[1.75] break-words border border-line">
         {req ? highlight(session.input.sanitized, req.matchedText) : session.input.sanitized}
       </p>
       {parseEvents.length > 0 && (

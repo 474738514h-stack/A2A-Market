@@ -68,7 +68,7 @@ export function MessageBubble({ message, sellerName }: { message: MessageRecord;
           <Badge tone="danger">parse_error</Badge>
           <span className="text-aux font-semibold text-danger">未通过 message.schema.json 校验</span>
         </div>
-        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all rounded-xl bg-bg p-2 font-mono text-[12px] leading-5 text-ink">
+        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap break-all rounded-card bg-bg p-2 font-mono text-[12px] leading-5 text-ink">
           {JSON.stringify(message.payload, null, 0)}
         </pre>
         <ul className="mt-2 list-disc pl-5 text-aux text-danger">

@@ -14,7 +14,7 @@ export function GuardrailBanner({ event }: { event: GuardrailEvent }) {
   return (
     <div
       role="status"
-      className="fade-in flex items-start gap-2.5 rounded-2xl border border-warning bg-warning-soft px-3.5 py-2.5 text-aux text-warning-ink"
+      className="fade-in flex items-start gap-2.5 rounded-card border border-warning bg-warning-soft px-3.5 py-2.5 text-aux text-warning-ink"
     >
       <svg viewBox="0 0 20 20" className="mt-0.5 h-4 w-4 shrink-0 fill-warning" aria-hidden>
         <path d="M10 2 1 18h18L10 2Zm-1 6h2v5H9V8Zm0 6h2v2H9v-2Z" />

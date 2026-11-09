@@ -70,7 +70,7 @@ export function PromptConfigDrawer({ open, onClose }: { open: boolean; onClose: 
             role="tab"
             aria-selected={i === active}
             onClick={() => setActive(i)}
-            className={`press rounded-2xl border px-3 py-2 text-left text-aux font-semibold ${
+            className={`press rounded-card border px-3 py-2 text-left text-aux font-semibold ${
               i === active ? 'border-primary bg-primary-soft text-primary-ink' : 'border-line bg-bg text-ink'
             }`}
           >
@@ -87,7 +87,7 @@ export function PromptConfigDrawer({ open, onClose }: { open: boolean; onClose: 
       </div>
 
       {meta.changelog && (
-        <div className="mt-3 rounded-2xl bg-surface p-3 border border-line">
+        <div className="mt-3 rounded-card bg-surface p-3 border border-line">
           <div className="text-aux font-bold text-ink">changelog</div>
           <ul className="mt-1 space-y-1 text-aux text-muted">
             {meta.changelog.map((c) => (
@@ -110,7 +110,7 @@ export function PromptConfigDrawer({ open, onClose }: { open: boolean; onClose: 
           下载
         </Button>
       </div>
-      <pre className="mt-3 max-h-[46dvh] overflow-auto rounded-2xl bg-ink p-4 font-mono text-[12px] leading-5 text-bg" style={{ backgroundColor: 'var(--text)' }}>
+      <pre className="mt-3 max-h-[46dvh] overflow-auto rounded-card bg-ink p-4 font-mono text-[12px] leading-5 text-bg" style={{ backgroundColor: 'var(--text)' }}>
         {file.raw}
       </pre>
     </Drawer>

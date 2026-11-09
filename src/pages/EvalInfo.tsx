@@ -16,7 +16,7 @@ function formatTime(iso: string) {
 function CopyCommand() {
   const [copied, setCopied] = useState(false)
   return (
-    <div className="flex items-center gap-2 rounded-2xl bg-bg p-2 pl-4 border border-line">
+    <div className="flex items-center gap-2 rounded-card bg-bg p-2 pl-4 border border-line">
       <code className="min-w-0 flex-1 overflow-x-auto whitespace-nowrap font-mono text-[12px] text-ink">{EVAL_COMMAND}</code>
       <Button
         size="sm"
@@ -84,7 +84,7 @@ function ReportView({ report }: { report: EvalReport }) {
         {METRIC_DEFS.map((d) => {
           const m = report.metrics[d.key]
           return (
-            <div key={d.key} className="rounded-2xl bg-bg p-3 border border-line">
+            <div key={d.key} className="rounded-card bg-bg p-3 border border-line">
               <div className="text-aux text-muted">{d.label}</div>
               <div className="mt-0.5 text-[22px] font-extrabold tabular-nums text-ink">{formatValue(m?.value ?? null, d.unit)}</div>
               <div className="text-aux text-muted">
@@ -93,7 +93,7 @@ function ReportView({ report }: { report: EvalReport }) {
             </div>
           )
         })}
-        <div className="rounded-2xl bg-bg p-3 border border-line">
+        <div className="rounded-card bg-bg p-3 border border-line">
           <div className="text-aux text-muted">样本符合预期</div>
           <div className="mt-0.5 text-[22px] font-extrabold tabular-nums text-ink">
             {report.casePassRate.passed}/{report.casePassRate.total}
@@ -103,7 +103,7 @@ function ReportView({ report }: { report: EvalReport }) {
       </div>
 
       <div className="mt-4 space-y-2 text-aux">
-        <div className="rounded-2xl bg-primary-soft px-4 py-3 text-primary-ink">
+        <div className="rounded-card bg-primary-soft px-4 py-3 text-primary-ink">
           {cmp.status === 'baseline_established' ? (
             <>
               <b>基线：</b>

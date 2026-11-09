@@ -12,8 +12,8 @@ const variants: Record<Variant, string> = {
 
 const sizes: Record<Size, string> = {
   lg: 'h-14 px-6 text-[16px] font-bold rounded-card w-full',
-  md: 'h-11 px-5 text-body font-semibold rounded-2xl',
-  sm: 'h-8 px-3 text-aux font-semibold rounded-xl',
+  md: 'h-11 px-5 text-body font-semibold rounded-card',
+  sm: 'h-8 px-3 text-aux font-semibold rounded-card',
 }
 
 export function Button({

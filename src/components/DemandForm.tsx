@@ -44,7 +44,7 @@ export function DemandForm({
         maxLength={500}
         rows={3}
         placeholder="例如：帮我找一本 9 成新、无笔记的《人类简史》，预算 20 元"
-        className="w-full resize-none rounded-2xl border border-line bg-bg px-4 py-3 text-body text-ink outline-none transition-shadow duration-200 ease-spring placeholder:text-muted focus:border-primary focus:shadow-[0_0_0_3px_var(--primary-soft)] disabled:opacity-60"
+        className="w-full resize-none rounded-card border border-line bg-bg px-4 py-3 text-body text-ink outline-none transition-shadow duration-200 ease-spring placeholder:text-muted focus:border-primary focus:shadow-[0_0_0_3px_var(--primary-soft)] disabled:opacity-60"
       />
       <div className="mt-2 flex flex-wrap gap-1.5">
         {HINT_CHIPS.map((h) => (

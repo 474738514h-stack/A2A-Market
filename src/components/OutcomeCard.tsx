@@ -32,14 +32,14 @@ export function OutcomeCard({ session, onViewDeal, onRetry }: { session: Session
           <button
             type="button"
             onClick={onViewDeal}
-            className="press h-12 rounded-2xl bg-success text-body font-bold text-white"
+            className="press h-12 rounded-card bg-success text-body font-bold text-white"
           >
             查看交易草案
           </button>
         ) : (
           <>
             <ManualReviewButton reason={outcome.detail} />
-            <button type="button" onClick={onRetry} className="press h-11 rounded-2xl bg-bg text-body font-semibold text-ink border border-line">
+            <button type="button" onClick={onRetry} className="press h-11 rounded-card bg-bg text-body font-semibold text-ink border border-line">
               换个需求再试
             </button>
           </>

@@ -36,7 +36,7 @@ export function SellerMatchCard({ session }: { session: SessionResult }) {
         }
       />
       {best && (
-        <div className="rounded-2xl border border-primary bg-bg p-4">
+        <div className="rounded-card border border-primary bg-bg p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
               <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export function SellerMatchCard({ session }: { session: SessionResult }) {
       {others.length > 0 && (
         <ul className="mt-3 space-y-2">
           {others.map((s) => (
-            <li key={s.sellerId} className="flex items-center justify-between gap-3 rounded-2xl bg-bg px-4 py-2.5 border border-line">
+            <li key={s.sellerId} className="flex items-center justify-between gap-3 rounded-card bg-bg px-4 py-2.5 border border-line">
               <div className="min-w-0">
                 <div className="truncate text-aux font-semibold text-ink">
                   {s.sellerName} <span className="font-normal text-muted">· {s.listPrice} 元</span>
