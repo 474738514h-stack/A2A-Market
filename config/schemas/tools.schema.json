@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "tools.schema.json",
+  "title": "AgentTools",
+  "version": "1.0.0",
+  "effectiveDate": "2026-11-09",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-09",
+      "changes": ["首个版本：parse_requirement / broadcast_demand / make_offer / ask_condition / confirm_deal。"]
+    }
+  ],
+  "description": "模拟 Function Calling 的工具定义。每个工具有 input / output 两个 JSON Schema；output 由引擎在调用后校验。\"$ref\": \"message.schema.json\" 指向同目录的消息 Schema。",
+  "tools": {
+    "parse_requirement": {
+      "description": "把买家自然语言需求解析为结构化字段（规则解析，模拟 LLM 抽取）。",
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text"],
+        "properties": { "text": { "type": "string", "minLength": 1, "maxLength": 500 } }
+      },
+      "output": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "bookId", "conditionMin", "noNotes", "budget", "confidence", "matchedText", "missing"],
+        "properties": {
+          "title": { "type": ["string", "null"] },
+          "bookId": { "type": ["string", "null"] },
+          "conditionMin": { "type": ["integer", "null"], "minimum": 0, "maximum": 100 },
+          "noNotes": { "type": ["boolean", "null"] },
+          "budget": { "type": ["number", "null"], "minimum": 0 },
+          "confidence": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["title", "condition", "notes", "budget"],
+            "properties": {
+              "title": { "type": "number", "minimum": 0, "maximum": 1 },
+              "condition": { "type": "number", "minimum": 0, "maximum": 1 },
+              "notes": { "type": "number", "minimum": 0, "maximum": 1 },
+              "budget": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          },
+          "matchedText": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["title", "condition", "notes", "budget"],
+            "properties": {
+              "title": { "type": ["string", "null"] },
+              "condition": { "type": ["string", "null"] },
+              "notes": { "type": ["string", "null"] },
+              "budget": { "type": ["string", "null"] }
+            }
+          },
+          "missing": { "type": "array", "items": { "type": "string", "enum": ["title", "budget"] } }
+        }
+      }
+    },
+    "broadcast_demand": {
+      "description": "把结构化需求广播给所有持有该书的卖家 Agent。",
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["bookId"],
+        "properties": { "bookId": { "type": ["string", "null"] } }
+      },
+      "output": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["reached"],
+        "properties": { "reached": { "type": "array", "items": { "type": "string" } } }
+      }
+    },
+    "make_offer": {
+      "description": "发送一条议价消息（出价 / 还价 / 接受 / 拒绝）。",
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["round", "actor"],
+        "properties": {
+          "round": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "actor": { "type": "string", "enum": ["buyer", "seller"] }
+        }
+      },
+      "output": { "$ref": "message.schema.json" }
+    },
+    "ask_condition": {
+      "description": "买家询问实际品相；卖家如实回复。",
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["question"],
+        "properties": { "question": { "type": "string", "minLength": 1 } }
+      },
+      "output": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["grade", "hasNotes", "defects", "reply"],
+        "properties": {
+          "grade": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "hasNotes": { "type": "boolean" },
+          "defects": { "type": "string" },
+          "reply": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "confirm_deal": {
+      "description": "双方达成一致后生成交易草案，等待买家人工确认。",
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sellerId", "price"],
+        "properties": {
+          "sellerId": { "type": "string" },
+          "price": { "type": "number", "minimum": 0 }
+        }
+      },
+      "output": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["bookTitle", "sellerId", "sellerName", "condition", "price", "listPrice", "budget", "fulfillment", "round"],
+        "properties": {
+          "bookTitle": { "type": "string" },
+          "sellerId": { "type": "string" },
+          "sellerName": { "type": "string" },
+          "condition": { "type": "string" },
+          "price": { "type": "number", "minimum": 0 },
+          "listPrice": { "type": "number", "minimum": 0 },
+          "budget": { "type": "number", "minimum": 0 },
+          "fulfillment": { "type": "string" },
+          "round": { "type": "integer", "minimum": 1, "maximum": 6 }
+        }
+      }
+    }
+  }
+}

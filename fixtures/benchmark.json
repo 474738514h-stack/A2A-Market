@@ -1,0 +1,1596 @@
+{
+  "_notice": "演示数据 · 脚本模拟。由 scripts/gen-benchmark.ts 生成，请勿手改；TS 引擎与 eval/run_eval.py 必须逐字段复现 expected。",
+  "fixtureVersion": "1.0.0",
+  "engineVersion": "1.0.0",
+  "generator": "scripts/gen-benchmark.ts",
+  "comparison": {
+    "structure": "递归比较：对象键集合一致、数组长度与顺序一致、字符串逐字一致、布尔/null 一致",
+    "numbers": "价格以「分」为整数计算后 /100 输出；比较时要求 round(x*100) 相等且 |a-b| < 1e-9。JSON 只有一种数字类型，19 与 19.0 视为相等",
+    "breakpoints": "outcome.status / outcome.round / stats 与最后一条消息的 seq 必须一致（终止点一致）"
+  },
+  "configHashes": {
+    "config/prompts/buyer.json": "2f014bb3423199ca20aa56d4e93f7cba8b6e43f41e60aee1952fbcb2e71faad2",
+    "config/prompts/seller.json": "66172d28433e2fe0733f724abefaf7cff275340017959eb1d1d1b4b4237065cd",
+    "config/schemas/message.schema.json": "494c5422980f598872a49d550ece37e6676fb5a14706a07f82e988989dc4d7fc",
+    "config/schemas/tools.schema.json": "fb33ad584ab6046398ad592746592f1bf74779c53c9ca11039f3211cfbe60d39",
+    "mock/books.json": "9d9582830fbf8e466b07261bff053b979ea937fdf681f31e0ad4f0fdea8d9d83",
+    "mock/sellers.json": "4f614043e0db432258074b69b69d6c63794618126cf7dca6b595502212e133d8"
+  },
+  "cases": [
+    {
+      "id": "bench-deal-seller-A",
+      "description": "seller_A 慢让价，预算 20 元，第 5 轮以 19 元成交",
+      "input": "帮我找一本 9 成新、无笔记的《人类简史》，预算 20 元",
+      "expected": {
+        "engineVersion": "1.0.0",
+        "promptVersions": {
+          "buyer": "1.0.0",
+          "seller": "1.0.0"
+        },
+        "input": {
+          "raw": "帮我找一本 9 成新、无笔记的《人类简史》，预算 20 元",
+          "sanitized": "帮我找一本 9 成新、无笔记的《人类简史》，预算 20 元"
+        },
+        "requirement": {
+          "title": "人类简史",
+          "bookId": "b-sapiens",
+          "conditionMin": 90,
+          "noNotes": true,
+          "budget": 20,
+          "confidence": {
+            "title": 0.98,
+            "condition": 0.95,
+            "notes": 0.92,
+            "budget": 0.97
+          },
+          "matchedText": {
+            "title": "《人类简史》",
+            "condition": "9 成新",
+            "notes": "无笔记",
+            "budget": "预算 20 元"
+          },
+          "missing": []
+        },
+        "candidates": [
+          "seller_A",
+          "seller_B",
+          "seller_C"
+        ],
+        "match": {
+          "sellerId": "seller_A",
+          "scores": [
+            {
+              "sellerId": "seller_A",
+              "sellerName": "书虫小林",
+              "grade": 90,
+              "hasNotes": false,
+              "listPrice": 26,
+              "reputation": 92,
+              "style": "warm",
+              "eligible": true,
+              "rejectReason": null,
+              "conditionFit": 40,
+              "priceFit": 5,
+              "reputationFit": 23,
+              "total": 68
+            },
+            {
+              "sellerId": "seller_C",
+              "sellerName": "典藏书阁",
+              "grade": 95,
+              "hasNotes": false,
+              "listPrice": 32,
+              "reputation": 88,
+              "style": "firm",
+              "eligible": true,
+              "rejectReason": null,
+              "conditionFit": 40,
+              "priceFit": 0,
+              "reputationFit": 22,
+              "total": 62
+            },
+            {
+              "sellerId": "seller_B",
+              "sellerName": "旧书铺老周",
+              "grade": 80,
+              "hasNotes": true,
+              "listPrice": 22,
+              "reputation": 78,
+              "style": "brief",
+              "eligible": false,
+              "rejectReason": "品相 8成新 低于要求 9成新",
+              "conditionFit": 0,
+              "priceFit": 0,
+              "reputationFit": 0,
+              "total": 0
+            }
+          ]
+        },
+        "inquiry": {
+          "sellerId": "seller_A",
+          "question": "请确认一下实际品相，是否9成新及以上、无笔记？",
+          "answer": {
+            "grade": 90,
+            "hasNotes": false,
+            "defects": "封面边角轻微磨损",
+            "reply": "亲，实际是 9成新，无笔记。封面边角轻微磨损。"
+          },
+          "satisfied": true,
+          "gaps": []
+        },
+        "messages": [
+          {
+            "seq": 5,
+            "round": 1,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "offer",
+              "price": 15,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "这本书我挺想要的，先出 15 元，你看合适吗？"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-OPEN-01"
+            }
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 24.4,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "亲，24.4 元好不好？书保存得很用心的～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 16,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，16 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 22.8,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "亲，22.8 元好不好？书保存得很用心的～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 13,
+            "round": 3,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 17,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，17 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 15,
+            "round": 3,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 21.2,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "亲，21.2 元好不好？书保存得很用心的～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 17,
+            "round": 4,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 18,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，18 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 19,
+            "round": 4,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 19.6,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "亲，19.6 元好不好？书保存得很用心的～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 21,
+            "round": 5,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 19,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，19 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 23,
+            "round": 5,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "accept",
+              "price": 19,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "好嘞，19 元成交！马上给你打包～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          }
+        ],
+        "guardrailEvents": [],
+        "toolCalls": [
+          {
+            "seq": 1,
+            "tool": "parse_requirement",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "《人类简史》 · ≥9成新·无笔记 · 预算 20 元"
+          },
+          {
+            "seq": 2,
+            "tool": "broadcast_demand",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "已广播给 3 位卖家 Agent"
+          },
+          {
+            "seq": 3,
+            "tool": "match_seller",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "命中 书虫小林（匹配分 68）"
+          },
+          {
+            "seq": 4,
+            "tool": "ask_condition",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "品相符合要求（9成新·无笔记）"
+          },
+          {
+            "seq": 6,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 1,
+            "status": "ok",
+            "summary": "出价 15 元"
+          },
+          {
+            "seq": 8,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 1,
+            "status": "ok",
+            "summary": "还价 24.4 元"
+          },
+          {
+            "seq": 10,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 16 元"
+          },
+          {
+            "seq": 12,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 22.8 元"
+          },
+          {
+            "seq": 14,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 3,
+            "status": "ok",
+            "summary": "还价 17 元"
+          },
+          {
+            "seq": 16,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 3,
+            "status": "ok",
+            "summary": "还价 21.2 元"
+          },
+          {
+            "seq": 18,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 4,
+            "status": "ok",
+            "summary": "还价 18 元"
+          },
+          {
+            "seq": 20,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 4,
+            "status": "ok",
+            "summary": "还价 19.6 元"
+          },
+          {
+            "seq": 22,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 5,
+            "status": "ok",
+            "summary": "还价 19 元"
+          },
+          {
+            "seq": 24,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 5,
+            "status": "ok",
+            "summary": "接受 19 元"
+          },
+          {
+            "seq": 25,
+            "tool": "confirm_deal",
+            "actor": "system",
+            "round": 5,
+            "status": "ok",
+            "summary": "生成交易草案：19 元"
+          }
+        ],
+        "outcome": {
+          "status": "deal",
+          "round": 5,
+          "manualReview": false,
+          "detail": "第 5 轮以 19 元成交，比挂牌价省 7 元"
+        },
+        "dealDraft": {
+          "bookTitle": "人类简史",
+          "sellerId": "seller_A",
+          "sellerName": "书虫小林",
+          "condition": "9成新·无笔记",
+          "price": 19,
+          "listPrice": 26,
+          "budget": 20,
+          "fulfillment": "快递发货 · 资金由平台模拟托管，确认收货后放款",
+          "round": 5
+        },
+        "stats": {
+          "rounds": 5,
+          "messageAttempts": 10,
+          "messageValid": 10,
+          "parseErrors": 0
+        }
+      }
+    },
+    {
+      "id": "bench-impasse-seller-C",
+      "description": "seller_C 强硬，底价 22 > 预算 20，6 轮后停止（G-ROUNDS）",
+      "input": "想要一本 9.5 成新的《人类简史》，最好没有笔记，预算 20 元",
+      "expected": {
+        "engineVersion": "1.0.0",
+        "promptVersions": {
+          "buyer": "1.0.0",
+          "seller": "1.0.0"
+        },
+        "input": {
+          "raw": "想要一本 9.5 成新的《人类简史》，最好没有笔记，预算 20 元",
+          "sanitized": "想要一本 9.5 成新的《人类简史》，最好没有笔记，预算 20 元"
+        },
+        "requirement": {
+          "title": "人类简史",
+          "bookId": "b-sapiens",
+          "conditionMin": 95,
+          "noNotes": true,
+          "budget": 20,
+          "confidence": {
+            "title": 0.98,
+            "condition": 0.95,
+            "notes": 0.92,
+            "budget": 0.97
+          },
+          "matchedText": {
+            "title": "《人类简史》",
+            "condition": "9.5 成新",
+            "notes": "没有笔记",
+            "budget": "预算 20 元"
+          },
+          "missing": []
+        },
+        "candidates": [
+          "seller_A",
+          "seller_B",
+          "seller_C"
+        ],
+        "match": {
+          "sellerId": "seller_C",
+          "scores": [
+            {
+              "sellerId": "seller_C",
+              "sellerName": "典藏书阁",
+              "grade": 95,
+              "hasNotes": false,
+              "listPrice": 32,
+              "reputation": 88,
+              "style": "firm",
+              "eligible": true,
+              "rejectReason": null,
+              "conditionFit": 40,
+              "priceFit": 0,
+              "reputationFit": 22,
+              "total": 62
+            },
+            {
+              "sellerId": "seller_B",
+              "sellerName": "旧书铺老周",
+              "grade": 80,
+              "hasNotes": true,
+              "listPrice": 22,
+              "reputation": 78,
+              "style": "brief",
+              "eligible": false,
+              "rejectReason": "品相 8成新 低于要求 9.5成新",
+              "conditionFit": 0,
+              "priceFit": 0,
+              "reputationFit": 0,
+              "total": 0
+            },
+            {
+              "sellerId": "seller_A",
+              "sellerName": "书虫小林",
+              "grade": 90,
+              "hasNotes": false,
+              "listPrice": 26,
+              "reputation": 92,
+              "style": "warm",
+              "eligible": false,
+              "rejectReason": "品相 9成新 低于要求 9.5成新",
+              "conditionFit": 0,
+              "priceFit": 0,
+              "reputationFit": 0,
+              "total": 0
+            }
+          ]
+        },
+        "inquiry": {
+          "sellerId": "seller_C",
+          "question": "请确认一下实际品相，是否9.5成新及以上、无笔记？",
+          "answer": {
+            "grade": 95,
+            "hasNotes": false,
+            "defects": "",
+            "reply": "9.5成新，无笔记，品相很好。"
+          },
+          "satisfied": true,
+          "gaps": []
+        },
+        "messages": [
+          {
+            "seq": 5,
+            "round": 1,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "offer",
+              "price": 15,
+              "condition": "≥9.5成新·无笔记",
+              "notes": "",
+              "reason": "这本书我挺想要的，先出 15 元，你看合适吗？"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-OPEN-01"
+            }
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 31,
+              "condition": "9.5成新·无笔记",
+              "notes": "",
+              "reason": "这个品相值这个价，31 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 16,
+              "condition": "≥9.5成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，16 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 30,
+              "condition": "9.5成新·无笔记",
+              "notes": "",
+              "reason": "这个品相值这个价，30 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 13,
+            "round": 3,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 17,
+              "condition": "≥9.5成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，17 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 15,
+            "round": 3,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 29,
+              "condition": "9.5成新·无笔记",
+              "notes": "",
+              "reason": "这个品相值这个价，29 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 17,
+            "round": 4,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 18,
+              "condition": "≥9.5成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，18 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 19,
+            "round": 4,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 28,
+              "condition": "9.5成新·无笔记",
+              "notes": "",
+              "reason": "这个品相值这个价，28 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 21,
+            "round": 5,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 19,
+              "condition": "≥9.5成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，19 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 23,
+            "round": 5,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 27,
+              "condition": "9.5成新·无笔记",
+              "notes": "",
+              "reason": "这个品相值这个价，27 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 25,
+            "round": 6,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 20,
+              "condition": "≥9.5成新·无笔记",
+              "notes": "",
+              "reason": "20 元已经是我能给的最高价了。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 27,
+            "round": 6,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 26,
+              "condition": "9.5成新·无笔记",
+              "notes": "",
+              "reason": "这个品相值这个价，26 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          }
+        ],
+        "guardrailEvents": [
+          {
+            "seq": 29,
+            "ruleId": "G-ROUNDS",
+            "round": 6,
+            "actor": "system",
+            "action": "stopped",
+            "detail": "已达 6 轮上限仍未成交，停止自动议价"
+          }
+        ],
+        "toolCalls": [
+          {
+            "seq": 1,
+            "tool": "parse_requirement",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "《人类简史》 · ≥9.5成新·无笔记 · 预算 20 元"
+          },
+          {
+            "seq": 2,
+            "tool": "broadcast_demand",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "已广播给 3 位卖家 Agent"
+          },
+          {
+            "seq": 3,
+            "tool": "match_seller",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "命中 典藏书阁（匹配分 62）"
+          },
+          {
+            "seq": 4,
+            "tool": "ask_condition",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "品相符合要求（9.5成新·无笔记）"
+          },
+          {
+            "seq": 6,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 1,
+            "status": "ok",
+            "summary": "出价 15 元"
+          },
+          {
+            "seq": 8,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 1,
+            "status": "ok",
+            "summary": "还价 31 元"
+          },
+          {
+            "seq": 10,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 16 元"
+          },
+          {
+            "seq": 12,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 30 元"
+          },
+          {
+            "seq": 14,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 3,
+            "status": "ok",
+            "summary": "还价 17 元"
+          },
+          {
+            "seq": 16,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 3,
+            "status": "ok",
+            "summary": "还价 29 元"
+          },
+          {
+            "seq": 18,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 4,
+            "status": "ok",
+            "summary": "还价 18 元"
+          },
+          {
+            "seq": 20,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 4,
+            "status": "ok",
+            "summary": "还价 28 元"
+          },
+          {
+            "seq": 22,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 5,
+            "status": "ok",
+            "summary": "还价 19 元"
+          },
+          {
+            "seq": 24,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 5,
+            "status": "ok",
+            "summary": "还价 27 元"
+          },
+          {
+            "seq": 26,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 6,
+            "status": "ok",
+            "summary": "还价 20 元"
+          },
+          {
+            "seq": 28,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 6,
+            "status": "ok",
+            "summary": "还价 26 元"
+          }
+        ],
+        "outcome": {
+          "status": "max_rounds",
+          "round": 6,
+          "manualReview": true,
+          "detail": "谈了 6 轮，卖家最新报价 26 元，你的出价 20 元"
+        },
+        "dealDraft": null,
+        "stats": {
+          "rounds": 6,
+          "messageAttempts": 12,
+          "messageValid": 12,
+          "parseErrors": 0
+        }
+      }
+    },
+    {
+      "id": "bench-over-budget-seller-G",
+      "description": "seller_G 报出底价 104 > 预算 100，自动接受被 G-BUDGET 拦截",
+      "input": "《艺术的故事》9 成新，无笔记，预算 100 元",
+      "expected": {
+        "engineVersion": "1.0.0",
+        "promptVersions": {
+          "buyer": "1.0.0",
+          "seller": "1.0.0"
+        },
+        "input": {
+          "raw": "《艺术的故事》9 成新，无笔记，预算 100 元",
+          "sanitized": "《艺术的故事》9 成新，无笔记，预算 100 元"
+        },
+        "requirement": {
+          "title": "艺术的故事",
+          "bookId": "b-art",
+          "conditionMin": 90,
+          "noNotes": true,
+          "budget": 100,
+          "confidence": {
+            "title": 0.98,
+            "condition": 0.95,
+            "notes": 0.92,
+            "budget": 0.97
+          },
+          "matchedText": {
+            "title": "《艺术的故事》",
+            "condition": "9 成新",
+            "notes": "无笔记",
+            "budget": "预算 100 元"
+          },
+          "missing": []
+        },
+        "candidates": [
+          "seller_G"
+        ],
+        "match": {
+          "sellerId": "seller_G",
+          "scores": [
+            {
+              "sellerId": "seller_G",
+              "sellerName": "美术系学姐",
+              "grade": 90,
+              "hasNotes": false,
+              "listPrice": 138,
+              "reputation": 86,
+              "style": "warm",
+              "eligible": true,
+              "rejectReason": null,
+              "conditionFit": 40,
+              "priceFit": 0,
+              "reputationFit": 21,
+              "total": 61
+            }
+          ]
+        },
+        "inquiry": {
+          "sellerId": "seller_G",
+          "question": "请确认一下实际品相，是否9成新及以上、无笔记？",
+          "answer": {
+            "grade": 90,
+            "hasNotes": false,
+            "defects": "",
+            "reply": "亲，实际是 9成新，无笔记。"
+          },
+          "satisfied": true,
+          "gaps": []
+        },
+        "messages": [
+          {
+            "seq": 5,
+            "round": 1,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "offer",
+              "price": 75,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "这本书我挺想要的，先出 75 元，你看合适吗？"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-OPEN-01"
+            }
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 124.4,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "亲，124.4 元好不好？书保存得很用心的～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 80,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，80 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 110.8,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "亲，110.8 元好不好？书保存得很用心的～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 13,
+            "round": 3,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 85,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，85 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 15,
+            "round": 3,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 104,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "真的最低 104 元啦，再低就亏了～"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-FLOOR-01"
+            }
+          },
+          {
+            "seq": 17,
+            "round": 4,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "blocked",
+            "payload": {
+              "intent": "accept",
+              "price": 104,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "好，104 元成交。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-ACCEPT-03"
+            }
+          }
+        ],
+        "guardrailEvents": [
+          {
+            "seq": 19,
+            "ruleId": "G-BUDGET",
+            "round": 4,
+            "actor": "buyer",
+            "action": "blocked",
+            "detail": "拟接受 104 元，超出预算 100 元，已拦截，需要你确认是否加价"
+          }
+        ],
+        "toolCalls": [
+          {
+            "seq": 1,
+            "tool": "parse_requirement",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "《艺术的故事》 · ≥9成新·无笔记 · 预算 100 元"
+          },
+          {
+            "seq": 2,
+            "tool": "broadcast_demand",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "已广播给 1 位卖家 Agent"
+          },
+          {
+            "seq": 3,
+            "tool": "match_seller",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "命中 美术系学姐（匹配分 61）"
+          },
+          {
+            "seq": 4,
+            "tool": "ask_condition",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "品相符合要求（9成新·无笔记）"
+          },
+          {
+            "seq": 6,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 1,
+            "status": "ok",
+            "summary": "出价 75 元"
+          },
+          {
+            "seq": 8,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 1,
+            "status": "ok",
+            "summary": "还价 124.4 元"
+          },
+          {
+            "seq": 10,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 80 元"
+          },
+          {
+            "seq": 12,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 110.8 元"
+          },
+          {
+            "seq": 14,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 3,
+            "status": "ok",
+            "summary": "还价 85 元"
+          },
+          {
+            "seq": 16,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 3,
+            "status": "ok",
+            "summary": "还价 104 元"
+          },
+          {
+            "seq": 18,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 4,
+            "status": "blocked",
+            "summary": "接受 104 元"
+          }
+        ],
+        "outcome": {
+          "status": "over_budget",
+          "round": 4,
+          "manualReview": true,
+          "detail": "卖家底价 104 元，超出你的预算 100 元（约 4%）"
+        },
+        "dealDraft": null,
+        "stats": {
+          "rounds": 4,
+          "messageAttempts": 7,
+          "messageValid": 7,
+          "parseErrors": 0
+        }
+      }
+    },
+    {
+      "id": "bench-parse-fail-seller-H",
+      "description": "seller_H 第 2 轮消息连续两次未通过 Schema 校验（G-SCHEMA 重试 1 次后转人工）",
+      "input": "《三体》9 成新，无笔记，预算 25 元",
+      "expected": {
+        "engineVersion": "1.0.0",
+        "promptVersions": {
+          "buyer": "1.0.0",
+          "seller": "1.0.0"
+        },
+        "input": {
+          "raw": "《三体》9 成新，无笔记，预算 25 元",
+          "sanitized": "《三体》9 成新，无笔记，预算 25 元"
+        },
+        "requirement": {
+          "title": "三体",
+          "bookId": "b-santi",
+          "conditionMin": 90,
+          "noNotes": true,
+          "budget": 25,
+          "confidence": {
+            "title": 0.98,
+            "condition": 0.95,
+            "notes": 0.92,
+            "budget": 0.97
+          },
+          "matchedText": {
+            "title": "《三体》",
+            "condition": "9 成新",
+            "notes": "无笔记",
+            "budget": "预算 25 元"
+          },
+          "missing": []
+        },
+        "candidates": [
+          "seller_H",
+          "seller_I"
+        ],
+        "match": {
+          "sellerId": "seller_H",
+          "scores": [
+            {
+              "sellerId": "seller_H",
+              "sellerName": "科幻迷阿杰",
+              "grade": 90,
+              "hasNotes": false,
+              "listPrice": 30,
+              "reputation": 84,
+              "style": "brief",
+              "eligible": true,
+              "rejectReason": null,
+              "conditionFit": 40,
+              "priceFit": 15,
+              "reputationFit": 21,
+              "total": 76
+            },
+            {
+              "sellerId": "seller_I",
+              "sellerName": "城南书摊",
+              "grade": 80,
+              "hasNotes": true,
+              "listPrice": 22,
+              "reputation": 75,
+              "style": "brief",
+              "eligible": false,
+              "rejectReason": "品相 8成新 低于要求 9成新",
+              "conditionFit": 0,
+              "priceFit": 0,
+              "reputationFit": 0,
+              "total": 0
+            }
+          ]
+        },
+        "inquiry": {
+          "sellerId": "seller_H",
+          "question": "请确认一下实际品相，是否9成新及以上、无笔记？",
+          "answer": {
+            "grade": 90,
+            "hasNotes": false,
+            "defects": "",
+            "reply": "9成新，无笔记。"
+          },
+          "satisfied": true,
+          "gaps": []
+        },
+        "messages": [
+          {
+            "seq": 5,
+            "round": 1,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "offer",
+              "price": 18.75,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "这本书我挺想要的，先出 18.75 元，你看合适吗？"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-OPEN-01"
+            }
+          },
+          {
+            "seq": 7,
+            "round": 1,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 28,
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "28 元。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 9,
+            "round": 2,
+            "actor": "buyer",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "sent",
+            "payload": {
+              "intent": "counter",
+              "price": 20,
+              "condition": "≥9成新·无笔记",
+              "notes": "",
+              "reason": "我再加一点，20 元可以吗？诚心要。"
+            },
+            "errors": [],
+            "source": {
+              "prompt": "buyer@1.0.0",
+              "ruleId": "B-CONC-02"
+            }
+          },
+          {
+            "seq": 11,
+            "round": 2,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 1,
+            "status": "invalid",
+            "payload": {
+              "intent": "maybe",
+              "price": "26元",
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "这个价嘛……再看看"
+            },
+            "errors": [
+              "$.intent: not in enum",
+              "$.price: expected type number"
+            ],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          },
+          {
+            "seq": 14,
+            "round": 2,
+            "actor": "seller",
+            "tool": "make_offer",
+            "attempt": 2,
+            "status": "invalid",
+            "payload": {
+              "intent": "maybe",
+              "price": "26元",
+              "condition": "9成新·无笔记",
+              "notes": "",
+              "reason": "这个价嘛……再看看"
+            },
+            "errors": [
+              "$.intent: not in enum",
+              "$.price: expected type number"
+            ],
+            "source": {
+              "prompt": "seller@1.0.0",
+              "ruleId": "S-PACE-03"
+            }
+          }
+        ],
+        "guardrailEvents": [
+          {
+            "seq": 13,
+            "ruleId": "G-SCHEMA",
+            "round": 2,
+            "actor": "seller",
+            "action": "retry",
+            "detail": "消息未通过 Schema 校验（$.intent: not in enum; $.price: expected type number），重试 1 次"
+          },
+          {
+            "seq": 16,
+            "ruleId": "G-SCHEMA",
+            "round": 2,
+            "actor": "seller",
+            "action": "escalated",
+            "detail": "重试后仍未通过校验，停止自动议价并转人工"
+          }
+        ],
+        "toolCalls": [
+          {
+            "seq": 1,
+            "tool": "parse_requirement",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "《三体》 · ≥9成新·无笔记 · 预算 25 元"
+          },
+          {
+            "seq": 2,
+            "tool": "broadcast_demand",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "已广播给 2 位卖家 Agent"
+          },
+          {
+            "seq": 3,
+            "tool": "match_seller",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "命中 科幻迷阿杰（匹配分 76）"
+          },
+          {
+            "seq": 4,
+            "tool": "ask_condition",
+            "actor": "buyer",
+            "round": null,
+            "status": "ok",
+            "summary": "品相符合要求（9成新·无笔记）"
+          },
+          {
+            "seq": 6,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 1,
+            "status": "ok",
+            "summary": "出价 18.75 元"
+          },
+          {
+            "seq": 8,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 1,
+            "status": "ok",
+            "summary": "还价 28 元"
+          },
+          {
+            "seq": 10,
+            "tool": "make_offer",
+            "actor": "buyer",
+            "round": 2,
+            "status": "ok",
+            "summary": "还价 20 元"
+          },
+          {
+            "seq": 12,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 2,
+            "status": "error",
+            "summary": "Schema 校验失败"
+          },
+          {
+            "seq": 15,
+            "tool": "make_offer",
+            "actor": "seller",
+            "round": 2,
+            "status": "error",
+            "summary": "Schema 校验失败"
+          }
+        ],
+        "outcome": {
+          "status": "message_parse_failed",
+          "round": 2,
+          "manualReview": true,
+          "detail": "第 2 轮卖家消息连续 2 次未通过 Schema 校验"
+        },
+        "dealDraft": null,
+        "stats": {
+          "rounds": 2,
+          "messageAttempts": 5,
+          "messageValid": 3,
+          "parseErrors": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "_notice": "演示数据 · 脚本模拟，不调用真实大模型。本文件的数值参数驱动前端引擎与 eval/run_eval.py 的买家策略。",
+  "id": "buyer",
+  "version": "1.0.0",
+  "effectiveDate": "2026-11-09",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-09",
+      "changes": ["首个版本：开价 75% 预算，每轮让步 5% 预算，预算硬上限，最多 6 轮。"]
+    }
+  ],
+  "role": "你是买家的二手书采购代理。目标：在不超过买家预算的前提下，以尽可能低的价格买到满足品相要求的书；不泄露买家预算上限与个人信息。",
+  "budgetCap": {
+    "ruleId": "B-BUDGET-01",
+    "mode": "hard",
+    "description": "任何出价与接受价都不得高于买家预算；由护栏 G-BUDGET 在引擎内强制执行。"
+  },
+  "openingRule": {
+    "ruleId": "B-OPEN-01",
+    "openingRatioPct": 75,
+    "description": "首轮出价 = 预算 × 75%（向下取整到分），且不高于卖家挂牌价。"
+  },
+  "concessionPlan": {
+    "ruleId": "B-CONC-02",
+    "stepPctOfBudget": 5,
+    "maxPrice": "budget",
+    "description": "每轮在上一轮出价基础上让步 预算 × 5%，封顶为预算。"
+  },
+  "acceptRule": {
+    "ruleId": "B-ACCEPT-03",
+    "description": "卖家报价 ≤ min(预算, 本轮计划出价) 时直接接受；卖家已报底价且 ≤ 预算时接受。"
+  },
+  "walkawayRule": {
+    "ruleId": "B-WALK-04",
+    "maxRounds": 6,
+    "nearMissPct": 5,
+    "description": "卖家报出底价且高于预算：超出 ≤ 5% 时交由买家人工确认是否加价（护栏拦截自动接受）；超出更多则礼貌拒绝。6 轮未成交转人工。"
+  },
+  "conditionRule": {
+    "ruleId": "B-COND-05",
+    "description": "出价前先调用 ask_condition 确认实际品相与笔记情况；不满足买家要求则拒绝。"
+  },
+  "safetyRules": [
+    { "ruleId": "G-BUDGET", "description": "预算硬上限，超出即拦截并转人工。" },
+    { "ruleId": "G-ROUNDS", "maxRounds": 6, "description": "最多 6 轮议价。" },
+    { "ruleId": "G-SWING", "maxSwingPct": 15, "description": "任一方单轮报价变动不超过上一轮自身报价的 15%，超出则截断。" },
+    { "ruleId": "G-PII", "description": "过滤手机号、身份证号等敏感信息，不向卖家透露。" },
+    { "ruleId": "G-SCHEMA", "maxRetries": 1, "description": "消息须通过 message.schema.json 校验；失败重试 1 次，再失败转人工。" }
+  ],
+  "reasonTemplates": {
+    "open": "这本书我挺想要的，先出 {price} 元，你看合适吗？",
+    "counter": "我再加一点，{price} 元可以吗？诚心要。",
+    "counterAtCap": "{price} 元已经是我能给的最高价了。",
+    "acceptAsk": "{price} 元可以，就这么定了。",
+    "acceptFloor": "好，{price} 元成交。",
+    "rejectFloor": "谢谢，不过价格还是超出我太多，这次先不买了。",
+    "rejectCondition": "抱歉，实际品相和我的要求不一致（{gap}），这次先不买了。",
+    "askCondition": "请确认一下实际品相，是否{wantGrade}、{wantNotes}？"
+  }
+}

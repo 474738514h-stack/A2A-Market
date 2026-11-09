@@ -1,0 +1,60 @@
+{
+  "_notice": "演示数据 · 脚本模拟。书目与 ISBN 均为虚构示例，不对应真实商品。",
+  "version": "1.0.0",
+  "books": [
+    {
+      "id": "b-sapiens",
+      "title": "人类简史",
+      "aliases": ["人类简史：从动物到上帝"],
+      "author": "尤瓦尔·赫拉利",
+      "isbnLike": "DEMO-978-0001",
+      "listPriceRange": [15, 35],
+      "conditionDistribution": { "95": 0.15, "90": 0.45, "80": 0.3, "70": 0.1 }
+    },
+    {
+      "id": "b-zhishen",
+      "title": "置身事内",
+      "aliases": ["置身事内：中国政府与经济发展"],
+      "author": "兰小欢",
+      "isbnLike": "DEMO-978-0002",
+      "listPriceRange": [18, 40],
+      "conditionDistribution": { "95": 0.2, "90": 0.4, "80": 0.25, "70": 0.15 }
+    },
+    {
+      "id": "b-cleancode",
+      "title": "代码整洁之道",
+      "aliases": ["Clean Code"],
+      "author": "Robert C. Martin",
+      "isbnLike": "DEMO-978-0003",
+      "listPriceRange": [25, 59],
+      "conditionDistribution": { "95": 0.1, "90": 0.35, "85": 0.35, "70": 0.2 }
+    },
+    {
+      "id": "b-art",
+      "title": "艺术的故事",
+      "aliases": [],
+      "author": "贡布里希",
+      "isbnLike": "DEMO-978-0004",
+      "listPriceRange": [90, 180],
+      "conditionDistribution": { "95": 0.2, "90": 0.5, "80": 0.3 }
+    },
+    {
+      "id": "b-santi",
+      "title": "三体",
+      "aliases": ["三体1"],
+      "author": "刘慈欣",
+      "isbnLike": "DEMO-978-0005",
+      "listPriceRange": [15, 35],
+      "conditionDistribution": { "95": 0.1, "90": 0.4, "80": 0.35, "70": 0.15 }
+    },
+    {
+      "id": "b-bainian",
+      "title": "百年孤独",
+      "aliases": [],
+      "author": "加西亚·马尔克斯",
+      "isbnLike": "DEMO-978-0006",
+      "listPriceRange": [18, 40],
+      "conditionDistribution": { "95": 0.15, "90": 0.45, "80": 0.3, "70": 0.1 }
+    }
+  ]
+}

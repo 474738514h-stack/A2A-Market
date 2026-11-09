@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "message.schema.json",
+  "title": "NegotiationMessage",
+  "version": "1.0.0",
+  "effectiveDate": "2026-11-09",
+  "changelog": [
+    { "version": "1.0.0", "date": "2026-11-09", "changes": ["首个版本：统一买卖双方协商消息结构。"] }
+  ],
+  "description": "买卖 Agent 每条议价消息的统一结构。前端引擎（src/engine/schemaValidate.ts）与 eval/run_eval.py 共用此文件。价格单位：元，精确到分。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["intent", "price", "condition", "notes", "reason"],
+  "properties": {
+    "intent": {
+      "type": "string",
+      "enum": ["offer", "counter", "accept", "reject"],
+      "description": "offer=首轮出价；counter=还价；accept=接受对方当前价格；reject=拒绝并结束。"
+    },
+    "price": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100000,
+      "description": "本条消息对应的价格（元）。accept 时为成交价；reject 时为最后一次报价。"
+    },
+    "condition": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60,
+      "description": "品相描述，例如「9成新·无笔记」。买家消息为要求，卖家消息为实际品相。"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 120,
+      "description": "补充说明（已过滤敏感信息），可为空字符串。"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "本轮决策理由（面向对方的话术）。"
+    }
+  }
+}

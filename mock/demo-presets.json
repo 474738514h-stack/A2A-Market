@@ -1,0 +1,50 @@
+{
+  "_notice": "演示数据 · 脚本模拟。一键演示需求；expected 为设计预期，实际结果以引擎运行为准。",
+  "version": "1.0.0",
+  "presets": [
+    {
+      "id": "p-deal",
+      "label": "预算充足 · 成交",
+      "text": "帮我找一本 9 成新、无笔记的《人类简史》，预算 20 元",
+      "expected": "deal"
+    },
+    {
+      "id": "p-impasse",
+      "label": "预算偏低 · 僵局",
+      "text": "想要一本 9.5 成新的《人类简史》，最好没有笔记，预算 20 元",
+      "expected": "max_rounds"
+    },
+    {
+      "id": "p-condition",
+      "label": "品相不符 · 拒绝",
+      "text": "找一本无笔记的《置身事内》，8 成新以上，预算 25 元",
+      "expected": "condition_rejected"
+    },
+    {
+      "id": "p-pii",
+      "label": "敏感信息 · 护栏",
+      "text": "《代码整洁之道》8 成新就行，预算 35 元，有消息打我电话 13812345678",
+      "expected": "deal"
+    }
+  ],
+  "exceptionPresets": [
+    {
+      "id": "x-over-budget",
+      "label": "超预算拦截",
+      "text": "《艺术的故事》9 成新，无笔记，预算 100 元",
+      "expected": "over_budget"
+    },
+    {
+      "id": "x-max-rounds",
+      "label": "超 6 轮",
+      "text": "《百年孤独》9 成新，预算 25 元",
+      "expected": "max_rounds"
+    },
+    {
+      "id": "x-parse-fail",
+      "label": "消息解析失败",
+      "text": "《三体》9 成新，无笔记，预算 25 元",
+      "expected": "message_parse_failed"
+    }
+  ]
+}

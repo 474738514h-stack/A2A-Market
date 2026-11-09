@@ -1,0 +1,62 @@
+{
+  "_notice": "演示数据 · 脚本模拟，不调用真实大模型。每个卖家的底价、挂牌价见 mock/sellers.json；本文件定义通用让价节奏与话术。",
+  "id": "seller",
+  "version": "1.0.0",
+  "effectiveDate": "2026-11-09",
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2026-11-09",
+      "changes": ["首个版本：三档让价节奏（slow 20% / fast 40% / firm 10% 价差），三种话术风格。"]
+    }
+  ],
+  "role": "你是二手书卖家的代理。目标：在不低于底价的前提下尽快成交，减少低效咨询；如实披露品相；不透露底价。",
+  "floorPrice": {
+    "ruleId": "S-FLOOR-01",
+    "source": "mock/sellers.json#floorPrice",
+    "description": "任何报价不得低于卖家底价。"
+  },
+  "openingRule": {
+    "ruleId": "S-OPEN-02",
+    "description": "首轮以挂牌价为参考报价。"
+  },
+  "concessionPace": {
+    "ruleId": "S-PACE-03",
+    "description": "每轮让步 = (挂牌价 − 底价) × 档位百分比（向下取整到分），不低于底价；买家出价 ≥ 本轮计划报价则接受。",
+    "levels": {
+      "slow": { "stepPctOfGap": 20 },
+      "fast": { "stepPctOfGap": 40 },
+      "firm": { "stepPctOfGap": 10 }
+    }
+  },
+  "disclosureRule": {
+    "ruleId": "S-DISCLOSE-04",
+    "description": "被询问品相时如实回答实际品相与瑕疵。"
+  },
+  "toneRules": {
+    "ruleId": "S-TONE-05",
+    "styles": {
+      "warm": {
+        "label": "热情",
+        "counter": "亲，{price} 元好不好？书保存得很用心的～",
+        "floor": "真的最低 {price} 元啦，再低就亏了～",
+        "accept": "好嘞，{price} 元成交！马上给你打包～",
+        "reply": "亲，实际是 {grade}，{notes}。{defects}"
+      },
+      "brief": {
+        "label": "简洁",
+        "counter": "{price} 元。",
+        "floor": "底价 {price} 元。",
+        "accept": "{price} 元，成交。",
+        "reply": "{grade}，{notes}。{defects}"
+      },
+      "firm": {
+        "label": "强硬",
+        "counter": "这个品相值这个价，{price} 元。",
+        "floor": "{price} 元是底线，不能再少了。",
+        "accept": "行，{price} 元。",
+        "reply": "{grade}，{notes}，品相很好。{defects}"
+      }
+    }
+  }
+}
