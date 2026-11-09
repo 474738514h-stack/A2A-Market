@@ -172,8 +172,9 @@ sequenceDiagram
 npm install                  # 安装依赖（需要 Node.js 20+）
 npm run dev                  # 启动买家工作台开发服务器
 npm test                     # 运行 Vitest 单元测试：协商引擎、护栏、基准 fixture、配置元数据
+npm run build                # 先做 TypeScript 类型检查，再构建生产版本到 dist/
 npm run bench:gen            # 改了引擎或配置后，重新生成 fixtures/benchmark.json
-python3 eval/run_eval.py     # 运行离线协商评测（需要 Python 3.10+，先做 TS↔Python 基准比对，再跑 30 条样本）
+python3 eval/run_eval.py     # 运行离线协商评测（需要 Python 3.10+，先做 TS↔Python 基准比对，再跑 30 条样本）；npm run eval 与它完全等价
 ```
 
 评测指标定义与复跑约定见 [eval/README.md](eval/README.md)。
@@ -212,6 +213,29 @@ python3 eval/run_eval.py     # 运行离线协商评测（需要 Python 3.10+，
 - [ ] P2：持续评测流水线（CI 中跑基准比对与样本评测）
 - [ ] P2：灰度发布与 A/B 实验
 - [ ] P2：权限与隐私（账号体系、数据脱敏策略、审计）
+
+<details><summary>目录结构</summary>
+
+```text
+config/prompts/          买家 / 卖家策略配置：版本号、changelog、让步参数、话术模板
+config/schemas/          消息与工具的 JSON Schema，前端与 Python 评测共用的单一事实源
+mock/                    Mock 数据：书目、卖家 Agent、一键演示预设
+src/engine/              纯函数协商引擎：状态机、工具、护栏、Schema 校验、托管流转、需求解析
+src/engine/__tests__/    Vitest 单元测试：引擎、护栏、基准 fixture、配置元数据
+src/pages/               三个页面：买家工作台、交易托管、评测说明
+src/components/          业务组件：需求表单、解析卡、匹配卡、协商时间线、托管步骤、配置抽屉等
+src/components/ui/       基础 UI 组件
+src/store/               Zustand 会话状态（sessionStorage 持久化）与时间线节拍
+src/data/                配置与 Mock 数据加载、评测元数据
+src/styles/              全局样式与 CSS 变量设计令牌
+scripts/                 生成基准 fixture 的脚本（npm run bench:gen）
+fixtures/                benchmark.json：TS 生成、Python 必须逐字段复现的基准用例
+eval/                    离线评测：run_eval.py（仅用标准库）、30 条样本、指标与复跑约定
+docs/                    架构说明、设计决策、3 分钟演示脚本
+public/                  静态资源
+```
+
+</details>
 
 ## 加入我们
 
