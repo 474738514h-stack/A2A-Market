@@ -91,6 +91,8 @@
 
 整个过程，买家 Agent 从没说出“20 元”这个数字；卖家的底价也只有卖家自己的 Agent 知道。双方的底牌，都留在各自的 Agent 手里。
 
+[完整的 3 分钟演示脚本 →](docs/demo-script.md)
+
 ## 不是聊天机器人，是有护栏的谈判引擎
 
 让 AI 替你花钱，最怕它“自由发挥”。所以 v0.1 的协商引擎是**确定性的纯函数状态机**：同样的输入，永远得到同样的结果，每一步都可审计、可复现、可测试。
@@ -156,7 +158,7 @@ sequenceDiagram
 
 ## 技术栈
 
-- **前端**：Vite + React 18 + TypeScript
+- **前端**：Vite + React 19 + TypeScript
 - **样式**：Tailwind CSS，基于 CSS 变量的极简设计
 - **协商引擎**：纯函数式确定性状态机，配置驱动，无副作用
 - **协议**：结构化消息 + JSON Schema 校验
@@ -167,10 +169,14 @@ sequenceDiagram
 ## 本地运行
 
 ```bash
-npm install
-npm run dev                  # 启动买家工作台
-python eval/run_eval.py      # 运行离线协商评测
+npm install                  # 安装依赖（需要 Node.js 20+）
+npm run dev                  # 启动买家工作台开发服务器
+npm test                     # 运行 Vitest 单元测试：协商引擎、护栏、基准 fixture、配置元数据
+npm run bench:gen            # 改了引擎或配置后，重新生成 fixtures/benchmark.json
+python3 eval/run_eval.py     # 运行离线协商评测（需要 Python 3.10+，先做 TS↔Python 基准比对，再跑 30 条样本）
 ```
+
+评测指标定义与复跑约定见 [eval/README.md](eval/README.md)。
 
 ## 路线图
 
@@ -194,6 +200,18 @@ python eval/run_eval.py      # 运行离线协商评测
 **第一单 · 走出屏幕**
 
 - [ ] 招募第一家杭州本地实体二手书商，跑通第一笔真实的「无广告 DTC 交易」
+
+**待排期**
+
+- [ ] P1：多卖家并行比价视图
+- [ ] P1：卖家信誉分可视化
+- [ ] P2：真实大模型的成本、延迟监控（接入本身见 v0.2）
+- [ ] P2：数据库与会话持久化
+- [ ] P2：真实第三方托管与支付
+- [ ] P2：卖家信誉体系
+- [ ] P2：持续评测流水线（CI 中跑基准比对与样本评测）
+- [ ] P2：灰度发布与 A/B 实验
+- [ ] P2：权限与隐私（账号体系、数据脱敏策略、审计）
 
 ## 加入我们
 
